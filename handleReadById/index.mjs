@@ -9,12 +9,15 @@ const schema = new dynamoose.Schema({
 const friends = dynamoose.model('friends', schema);
 
 export const handler = async(event) => {
-
+  // console.log('this is the body', event.body);
+  // remember:  event.pathParameters.id
   const response = {statusCode: null, body: null,};
+  const id = event?.pathParameters?.id;
   
   try {
-    let results = await friends.scan().exec();
-    // console.log('results-------', results);
+    let results = await friends.get(id);
+    console.log('results-------', results);
+    
     response.body = JSON.stringify(results);
     response.statusCode = 200;
   }catch(e){
